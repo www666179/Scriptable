@@ -663,6 +663,17 @@ function cropImage(img, rect) {
 // Pixel sizes and positions for widgets on all supported phones.
 function phoneSizes() {
   let phones = {
+    2778: {
+      小号: 518,
+      中号: 1114,
+      大号: 1162,
+      左边: 86,
+      右边: 678,
+      顶部: 252,
+      中间: 898,
+      底部: 1544,
+    },
+
     2688: {
       小号: 507,
       中号: 1080,
@@ -694,6 +705,17 @@ function phoneSizes() {
       顶部: 213,
       中间: 783,
       底部: 1353,
+    },
+
+    2340: {
+      小号: 436,
+      中号: 936,
+      大号: 980,
+      左边: 72,
+      右边: 570,
+      顶部: 212,
+      中间: 756,
+      底部: 1300,
     },
 
     2208: {
