@@ -1,6 +1,8 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: orange; icon-glyph: grin-hearts;
+// Created by Enjoyee @ https://github.com/Enjoyee/Scriptable
+// Modified by Samuel Shi on 2020-10-24
 //////////////////////////////////////////
 // 预览大小【小：Small，中：Medium，大：Large】
 const previewSize = "Small";
