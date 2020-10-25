@@ -251,7 +251,7 @@ if (scheduleSize > 0) {
   addStyleText(
     leftStack,
     1,
-    "----------------------------------",
+    "----------------------------------------",
     1,
     Font.systemFont(10),
     schedulePoetryColor
