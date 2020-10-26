@@ -1,7 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: purple; icon-glyph: magic;
-// Created by Enjoyee at https://github.com/Enjoyee/Scriptable
+// Created by Enjoyee @ https://github.com/Enjoyee/Scriptable
 // Modified by Samuel Shi on 2020-10-23
 
 /*
@@ -35,7 +35,7 @@ let locationData = {
   subLocality: undefined,
 };
 
-// 锁定地区，直接使用上述填写的地址信息不进行定位
+// 是否锁定地区，值为"true"时直接使用默认定位信息，值为"false"时先尝试定位，定位失败则使用定位缓存或默认定位信息
 const lockLocation = false;
 
 // 是否需要选择图片背景
@@ -251,7 +251,7 @@ if (scheduleSize > 0) {
   addStyleText(
     leftStack,
     1,
-    "----------------------------------",
+    "----------------------------------------",
     1,
     Font.systemFont(10),
     schedulePoetryColor
@@ -518,7 +518,18 @@ if (weatherControl.UPDATE_TIME) {
   );
 }
 
-/*****************************小组件内容ENd*****************************/
+/*
+****************************************************************************
+上面添加你自己的组件内容/逻辑
+↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+****************************************************************************
+*/
+
+/*
+ ****************************************************************************
+ * 这里是图片逻辑，不用修改
+ ****************************************************************************
+ */
 
 if (!colorMode && !config.runsInWidget && changePicBg) {
   // Determine if user has taken the screenshot.
@@ -663,6 +674,17 @@ function cropImage(img, rect) {
 // Pixel sizes and positions for widgets on all supported phones.
 function phoneSizes() {
   let phones = {
+    2778: {
+      小号: 518,
+      中号: 1114,
+      大号: 1162,
+      左边: 86,
+      右边: 678,
+      顶部: 252,
+      中间: 898,
+      底部: 1544,
+    },
+
     2688: {
       小号: 507,
       中号: 1080,
@@ -674,15 +696,15 @@ function phoneSizes() {
       底部: 1488,
     },
 
-    1792: {
-      小号: 338,
-      中号: 720,
-      大号: 758,
-      左边: 54,
-      右边: 436,
-      顶部: 160,
-      中间: 580,
-      底部: 1000,
+    2532: {
+      小号: 472,
+      中号: 1012,
+      大号: 1062,
+      左边: 78,
+      右边: 618,
+      顶部: 230,
+      中间: 818,
+      底部: 1408,
     },
 
     2436: {
@@ -696,6 +718,17 @@ function phoneSizes() {
       底部: 1353,
     },
 
+    2340: {
+      小号: 436,
+      中号: 936,
+      大号: 980,
+      左边: 72,
+      右边: 570,
+      顶部: 212,
+      中间: 756,
+      底部: 1300,
+    },
+
     2208: {
       小号: 471,
       中号: 1044,
@@ -705,6 +738,28 @@ function phoneSizes() {
       顶部: 114,
       中间: 696,
       底部: 1278,
+    },
+
+    1792: {
+      小号: 338,
+      中号: 720,
+      大号: 758,
+      左边: 54,
+      右边: 436,
+      顶部: 160,
+      中间: 580,
+      底部: 1000,
+    },
+
+    1624: {
+      小号: 310,
+      中号: 658,
+      大号: 690,
+      左边: 46,
+      右边: 394,
+      顶部: 142,
+      中间: 522,
+      底部: 902,
     },
 
     1334: {
@@ -895,18 +950,30 @@ async function getWeather() {
       const humidity =
         parseInt(weatherJsonData.result.realtime.humidity * 100) + "%";
       log("相对湿度==>" + humidity);
-      weatherInfo.humidity = humidity;
+      if (humidity.length < 3) {
+        weatherInfo.humidity = "\x20\x20\x20\x20" + humidity;
+      } else {
+        weatherInfo.humidity = humidity;
+      }
 
       // 舒适指数
       const comfort = weatherJsonData.result.realtime.life_index.comfort.desc;
       log("舒适指数==>" + comfort);
-      weatherInfo.comfort = comfort;
+      if (comfort.length < 2) {
+        weatherInfo.comfort = "\x20\x20\x20\x20" + comfort;
+      } else {
+        weatherInfo.comfort = comfort;
+      }
 
       // 紫外线指数
       const ultraviolet =
         weatherJsonData.result.realtime.life_index.ultraviolet.desc;
       log("紫外线指数==>" + ultraviolet);
-      weatherInfo.ultraviolet = ultraviolet;
+      if (ultraviolet.length < 2) {
+        weatherInfo.ultraviolet = "\x20\x20\x20\x20" + ultraviolet;
+      } else {
+        weatherInfo.ultraviolet = ultraviolet;
+      }
 
       // 空气质量
       const aqi = weatherJsonData.result.realtime.air_quality.aqi.chn;
@@ -967,18 +1034,30 @@ async function getWeather() {
       const humidity =
         parseInt(weatherJsonData.result.realtime.humidity * 100) + "%";
       log("相对湿度==>" + humidity);
-      weatherInfo.humidity = humidity;
+      if (humidity.length < 3) {
+        weatherInfo.humidity = "\x20\x20\x20\x20" + humidity;
+      } else {
+        weatherInfo.humidity = humidity;
+      }
 
       // 舒适指数
       const comfort = weatherJsonData.result.realtime.life_index.comfort.desc;
       log("舒适指数==>" + comfort);
-      weatherInfo.comfort = comfort;
+      if (comfort.length < 2) {
+        weatherInfo.comfort = "\x20\x20\x20\x20" + comfort;
+      } else {
+        weatherInfo.comfort = comfort;
+      }
 
       // 紫外线指数
       const ultraviolet =
         weatherJsonData.result.realtime.life_index.ultraviolet.desc;
       log("紫外线指数==>" + ultraviolet);
-      weatherInfo.ultraviolet = ultraviolet;
+      if (ultraviolet.length < 2) {
+        weatherInfo.ultraviolet = "\x20\x20\x20\x20" + ultraviolet;
+      } else {
+        weatherInfo.ultraviolet = ultraviolet;
+      }
 
       // 空气质量
       const aqi = weatherJsonData.result.realtime.air_quality.aqi.chn;
@@ -1006,6 +1085,13 @@ async function getWeather() {
  **************************************
  */
 async function getLocation() {
+  // 设置定位信息缓存
+  const locationCache = files.joinPath(
+    files.documentsDirectory(),
+    "location-cache"
+  );
+  const cacheExists = files.fileExists(locationCache);
+
   if (!lockLocation) {
     try {
       const location = await Location.current();
@@ -1023,6 +1109,10 @@ async function getLocation() {
       locationData.subLocality = geo.subLocality;
       // 街道
       locationData.street = geo.thoroughfare;
+
+      // 将获得的定位数据写入缓存
+      files.writeString(locationCache, JSON.stringify(locationData));
+
       log(
         "定位信息：latitude=" +
           location.latitude +
@@ -1036,7 +1126,19 @@ async function getLocation() {
           locationData.street
       );
     } catch (e) {
-      log("定位出错了，" + e.toString());
+      if (cacheExists) {
+        // 读取定位数据缓存
+        const cache = files.readString(locationCache);
+        log("定位缓存数据获取成功");
+        // 转换定位数据为JSON格式
+        const locationJsonData = JSON.parse(cache);
+
+        locationData.latitude = locationJsonData.latitude;
+        locationData.longitude = locationJsonData.longitude;
+        locationData.locality = locationJsonData.locality;
+        locationData.subLocality = locationJsonData.subLocality;
+        locationData.street = locationJsonData.street;
+      }
     }
   }
 
