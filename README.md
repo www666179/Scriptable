@@ -1,4 +1,4 @@
-#### **scriptable App 脚本分享**
+#### **scriptable App Widgets分享**
 
 - **main 分支** 以及 **old 分支** 下的脚本均适配 **iPhone 12 系列** 透明背景，**old 分支** 是旧版本脚本。
 - 使用该 **main 分支** 下的任何脚本都要将 **ENV.js** 一并导入 **Scriptable App** ，但 **ENV.js** 不需要单独运行。
