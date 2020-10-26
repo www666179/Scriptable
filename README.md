@@ -1,4 +1,5 @@
-# Scriptable
+# Scriptable App Widgets
 
-Scriptable widgets for IOS  
-Enjoy!
+- Old scriptable widgets, adapted to iPhone 12 series.
+
+- ##Enjoy!
