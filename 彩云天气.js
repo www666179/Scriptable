@@ -270,7 +270,7 @@ if (scheduleSize > 0) {
   const poetry = await getPoetry();
 
   // 添加今日诗词
-  leftStack.addSpacer(4);
+  leftStack.addSpacer(8);
   const poetryStack = leftStack.addStack();
   // 诗词背景
   poetryStack.backgroundColor = new Color("666", 0.5);
