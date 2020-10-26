@@ -234,7 +234,7 @@ function phoneSizes() {
     },
 
     2688: {
-      // iPhone XS Max & 11 Pro Max  6.5 inch
+      // iPhone XS Max , 11 Pro Max  6.5 inch
       小号: 507,
       中号: 1080,
       大号: 1137,
@@ -246,7 +246,7 @@ function phoneSizes() {
     },
 
     2532: {
-      // iPhone 12 & 12 Pro  6.1 inch
+      // iPhone 12 , 12 Pro  6.1 inch
       小号: 472,
       中号: 1012,
       大号: 1058,
@@ -258,7 +258,7 @@ function phoneSizes() {
     },
 
     2436: {
-      // iPhone X & XS & 11 Pro  5.8 inch
+      // iPhone X , XS , 11 Pro  5.8 inch
       小号: 465,
       中号: 987,
       大号: 1035,
@@ -269,8 +269,20 @@ function phoneSizes() {
       底部: 1353,
     },
 
+    // iPad Air 4
+    2360: {
+      小号: 310,
+      中号: 658,
+      大号: 658,
+      左边: 132,
+      右边: 480,
+      顶部: 160,
+      中间: 508,
+      底部: 856,
+    },
+
     2340: {
-      // iPhone 12mini  5.4 inch
+      // iPhone 12 mini  5.4 inch
       小号: 436,
       中号: 936,
       大号: 980,
@@ -282,7 +294,7 @@ function phoneSizes() {
     },
 
     2208: {
-      // iPhone 6/6S/7/8 Plus  5.5 inch
+      // iPhone Plus  5.5 inch
       小号: 471,
       中号: 1044,
       大号: 1071,
@@ -293,8 +305,20 @@ function phoneSizes() {
       底部: 1278,
     },
 
+    //iPhone Plus in Display Zoom mode
+    2001: {
+      小号: 444,
+      中号: 963,
+      大号: 972,
+      左边: 81,
+      右边: 600,
+      顶部: 90,
+      中间: 618,
+      底部: 1146,
+    },
+
     1792: {
-      // iPhone XR & 11  6.1 inch
+      // iPhone XR , 11  6.1 inch
       小号: 338,
       中号: 720,
       大号: 758,
@@ -305,8 +329,20 @@ function phoneSizes() {
       底部: 1000,
     },
 
+    // iPhone 11 and XR in Display Zoom mode
+    1624: {
+      小号: 310,
+      中号: 658,
+      大号: 690,
+      左边: 46,
+      右边: 394,
+      顶部: 142,
+      中间: 522,
+      底部: 902,
+    },
+
     1334: {
-      // iPhone 6/6S/7/8/SE  4.7 inch
+      // iPhone 6/6S/7/8/SE2  4.7 inch
       小号: 296,
       中号: 642,
       大号: 648,
@@ -318,7 +354,7 @@ function phoneSizes() {
     },
 
     1136: {
-      // iPhone 5/5S/5C/SE  4.0 inch
+      // iPhone 5/5S/5C/SE1  4.0 inch
       小号: 282,
       中号: 584,
       大号: 622,
