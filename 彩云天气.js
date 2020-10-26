@@ -795,8 +795,8 @@ function getDateStr(date, formatter = "yyyy年MM月d日 EEE") {
  **************************************
  */
 function addSpace(str) {
-  const data = str;
-  if (data.length < 2) {
+  let data = str;
+  if (data.length == 1) {
     data = "\x20\x20\x20\x20" + data;
   }
   return data;
