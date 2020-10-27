@@ -16,7 +16,7 @@ env.configs.refreshInterval = 120; // 刷新间隔，单位分钟，非精准，
 const headTitleFontColor = new Color("FF7F00", 0.8);
 // 列表文字颜色
 const listTitleFontColor = new Color("ffffff", 0.8);
-// 热搜ID跟对应的标题，数据来源于 https://mo.fish/
+
 const tableTitles = [
   { 1: "球队" },
   { 2: "赛" },
