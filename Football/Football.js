@@ -10,7 +10,7 @@ env.configs.topPadding = 0; // 内容区边距
 env.configs.leftPadding = 0; // 内容区边距
 env.configs.bottomPadding = 0; // 内容区边距
 env.configs.rightPadding = 0; // 内容区边距
-// env.configs.refreshInterval = 30 // 刷新间隔，单位分钟，非精准，会有3-5分钟差距
+env.configs.refreshInterval = 120; // 刷新间隔，单位分钟，非精准，会有3-5分钟差距
 //////////////////////////////////
 // 大标题文字颜色
 const headTitleFontColor = new Color("FF7F00", 0.8);
