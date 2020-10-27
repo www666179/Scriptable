@@ -1,2 +1,3 @@
 # Scriptable
-Scriptable widgets for IOS 14
+
+scriptable widgets work with scriptable app on ios 14 <https://scriptable.app/>
