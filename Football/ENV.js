@@ -5,7 +5,6 @@
 ----------------------------------------------- */
 
 //------------------------------------------------
-// 定义本地数据缓存
 const fm = FileManager.local();
 let path = "";
 let exports = {};
@@ -51,11 +50,16 @@ exports.imgStyle = textStyle;
 //------------------------------------------------
 
 //------------------------------------------------
-exports.run = async function (scriptName, widget) {
+exports.run = async function (scriptName, widget, autoDak = false) {
   let appearance = (await exports.isUsingDarkAppearance()) ? "dark" : "light";
   let appearanceStr = appearance == "dark" ? "暗黑模式" : "白天模式";
+  let fileImgName = `${scriptName}.jpg`;
+  if (autoDak) {
+    fileImgName = `${scriptName}-${appearance}.jpg`;
+  } else {
+    appearanceStr = "";
+  }
 
-  let fileImgName = `${scriptName}-${appearance}.jpg`;
   path = fm.joinPath(fm.documentsDirectory(), fileImgName);
 
   if (
@@ -68,7 +72,11 @@ exports.run = async function (scriptName, widget) {
     return;
   }
 
-  const okTips = `您的小部件在${appearanceStr}下的背景已准备就绪，请退到桌面查看即可。`;
+  let subTips = "";
+  if (appearanceStr.length > 0) {
+    subTips = `在${appearanceStr}下的`;
+  }
+  const okTips = `您的小部件${subTips}背景已准备就绪，请退到桌面查看即可。`;
   let message = "图片模式支持相册照片&背景透明";
   let options = ["图片选择", "透明背景"];
   let isTransparentMode = await generateAlert(message, options);
@@ -163,13 +171,6 @@ exports.run = async function (scriptName, widget) {
 };
 //------------------------------------------------
 function completeWidget(widget) {
-  // 刷新间隔
-  const refreshInterval = exports.configs.refreshInterval;
-  if (refreshInterval > 0) {
-    widget.refreshAfterDate = new Date(
-      new Date() + 1000 * 60 * refreshInterval
-    );
-  }
   // 背景
   if (exports.configs.colorMode) {
     widget.backgroundColor = exports.configs.bgColor;
@@ -402,11 +403,6 @@ exports.getJson = async function (url) {
   return data;
 };
 //------------------------------------------------
-/*
- **************************************
- * 垂直居中
- **************************************
- */
 exports.alignVerticallyCenterStack = function (alignmentStack) {
   let returnStack = alignmentStack.addStack();
   returnStack.layoutVertically();
@@ -414,11 +410,6 @@ exports.alignVerticallyCenterStack = function (alignmentStack) {
   return returnStack;
 };
 //------------------------------------------------
-/*
- **************************************
- * 水平居中
- **************************************
- */
 exports.alignHorizontallyCenterStack = function (alignmentStack) {
   let returnStack = alignmentStack.addStack();
   returnStack.layoutHorizontally();
@@ -426,11 +417,6 @@ exports.alignHorizontallyCenterStack = function (alignmentStack) {
   return returnStack;
 };
 //------------------------------------------------
-/*
- **************************************
- * 底部对齐
- **************************************
- */
 exports.alignBottomStack = function (alignmentStack, marginBottom) {
   let contentStack = alignmentStack.addStack();
   contentStack.layoutVertically();
@@ -446,11 +432,6 @@ exports.alignBottomStack = function (alignmentStack, marginBottom) {
   return returnStack;
 };
 //------------------------------------------------
-/*
- **************************************
- * 顶部对齐
- **************************************
- */
 exports.alignTopStack = function (alignmentStack, marginTop) {
   let contentStack = alignmentStack.addStack();
   contentStack.layoutVertically();
@@ -467,11 +448,6 @@ exports.alignTopStack = function (alignmentStack, marginTop) {
   return returnStack;
 };
 //------------------------------------------------
-/*
- **************************************
- * 左对齐
- **************************************
- */
 exports.alignLeftStack = function (alignmentStack, marginLeft) {
   let contentStack = alignmentStack.addStack();
   contentStack.layoutHorizontally();
@@ -488,11 +464,6 @@ exports.alignLeftStack = function (alignmentStack, marginLeft) {
   return returnStack;
 };
 //------------------------------------------------
-/*
- **************************************
- * 右对齐
- **************************************
- */
 exports.alignRightStack = function (alignmentStack, marginRight) {
   let contentStack = alignmentStack.addStack();
   contentStack.layoutHorizontally();
@@ -563,11 +534,6 @@ exports.addStyleText = function () {
   resetTextStyle();
 };
 //------------------------------------------------
-/*
- **************************************
- * 获取定位
- **************************************
- */
 exports.getLocation = async function () {
   let locationData = {
     latitude: undefined,
@@ -577,9 +543,9 @@ exports.getLocation = async function () {
   };
 
   // 缓存目录
-  const locationCachePath = fm.joinPath(
+  const cachePath = fm.joinPath(
     fm.documentsDirectory(),
-    "location-cache"
+    "env-lsp-location-cache"
   );
 
   try {
@@ -604,8 +570,7 @@ exports.getLocation = async function () {
     locationData.street = geo.thoroughfare;
 
     // 缓存数据
-    log("定位数据请求成功，进行缓存。");
-    fm.writeString(locationCachePath, JSON.stringify(locationData));
+    fm.writeString(cachePath, JSON.stringify(locationData));
 
     log(
       "定位信息：latitude=" +
@@ -622,8 +587,8 @@ exports.getLocation = async function () {
   } catch (e) {
     log(`定位出错了，${e.toString()}`);
     // 读取缓存数据
-    const locationCache = fm.readString(locationCachePath);
-    log("读取定位缓存数据。");
+    const locationCache = fm.readString(cachePath);
+    log(`读取定位缓存数据：${locationCache}`);
     locationData = JSON.parse(locationCache);
   }
 
@@ -651,7 +616,38 @@ function resetTextStyle() {
   exports.textStyle.font = undefined; // 字体
   exports.textStyle.textColor = undefined; // 文字颜色
 }
+//------------------------------------------------
+// 是否使用缓存
+exports.useCache = function (cachePath) {
+  let use = false;
+  const cacheExists = fm.fileExists(cachePath);
+  const cacheDate = cacheExists ? fm.modificationDate(cachePath) : 0;
+  log(`缓存时间：${exports.getDateStr(new Date(cacheDate), "MM月dd日HH:mm")}`);
+  const refreshInterval = configs.refreshInterval * (60 * 1000);
+  log(`缓存过期：${configs.refreshInterval}min`);
+  if (
+    cacheExists &&
+    new Date().getTime() - cacheDate.getTime() < refreshInterval
+  ) {
+    use = true;
+  }
 
+  log(`是否使用缓存：${use}`);
+
+  return use;
+};
+//------------------------------------------------
+// 格式化时间
+exports.getDateStr = function (
+  date,
+  formatter = "yyyy年MM月d日 EEE",
+  locale = "zh_cn"
+) {
+  let df = new DateFormatter();
+  df.locale = locale;
+  df.dateFormat = formatter;
+  return df.string(date);
+};
 //------------------------------------------------
 module.exports = exports;
 //------------------------------------------------
