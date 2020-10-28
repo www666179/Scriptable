@@ -122,7 +122,7 @@ env.addStyleText();
 contentStack.addSpacer(2);
 
 // 积分榜标题
-let tableStack = env.alignLeftStack(contentStack, 50);
+let tableStack = env.alignLeftStack(contentStack, 40);
 for (var i = 0; i < tableTitles.length; i++) {
   textStyle.stack = tableStack;
   textStyle.text = Object.values(tableTitles[i])[0];
@@ -130,9 +130,9 @@ for (var i = 0; i < tableTitles.length; i++) {
   textStyle.textColor = headTitleFontColor;
   env.addStyleText();
   if (i == 0) {
-    tableStack.addSpacer(43);
+    tableStack.addSpacer(40);
   } else if (i == 1) {
-    tableStack.addSpacer(35);
+    tableStack.addSpacer(40);
   } else if (i == 2) {
     tableStack.addSpacer(23);
   } else if (i == 3) {
@@ -154,7 +154,7 @@ for (var item of leagueJSON.groups[0].ranking) {
     "teamImage" + j + "-cache"
   );
 
-  log(`${item.team.idInternal}`);
+  /*log(`${item.team.idInternal}`);
   const teamImgUrl = `https://images.onefootball.com/icons/teams/56/${item.team.idInternal}.png`;
   try {
     teamImg = await env.getImage(teamImgUrl);
@@ -163,15 +163,15 @@ for (var item of leagueJSON.groups[0].ranking) {
   } catch (e) {
     teamImg = fm.readImage(teamImgCachePath);
     log(`读取队徽缓存`);
-  }
+  }*/
 
   const stats = item.team.teamstats;
   let teamName = `${item.team.name}`;
-  imgStyle.stack = teamStack;
+  /*imgStyle.stack = teamStack;
   imgStyle.width = 13;
   imgStyle.height = 13;
   imgStyle.img = teamImg;
-  env.addStyleImg();
+  env.addStyleImg();*/
   if (teamName == "阿士東維拉足球會") {
     teamName = "阿斯顿维拉";
     createTextStack(teamStack, teamName, 80);
