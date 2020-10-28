@@ -545,7 +545,7 @@ exports.getLocation = async function () {
   // 缓存目录
   const cachePath = fm.joinPath(
     fm.documentsDirectory(),
-    "env-lsp-location-cache"
+    "location-cache"
   );
 
   try {
