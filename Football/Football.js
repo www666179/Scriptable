@@ -1,3 +1,6 @@
+// Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
+// icon-color: cyan; icon-glyph: magic;
 //------------------------------------------------
 const env = importModule("ENV.js");
 //------------------------------------------------
@@ -10,10 +13,10 @@ env.configs.topPadding = 0; // 内容区边距
 env.configs.leftPadding = 0; // 内容区边距
 env.configs.bottomPadding = 0; // 内容区边距
 env.configs.rightPadding = 0; // 内容区边距
-env.configs.refreshInterval = 120; // 刷新间隔，单位分钟，非精准，会有3-5分钟差距
+env.configs.refreshInterval = 1; // 刷新间隔，单位分钟，非精准，会有3-5分钟差距
 //////////////////////////////////
 // 大标题文字颜色
-const headTitleFontColor = new Color("FF7F00", 0.8);
+const headTitleFontColor = new Color("#e587ce", 0.8);
 // 列表文字颜色
 const listTitleFontColor = new Color("ffffff", 0.8);
 
@@ -32,15 +35,19 @@ const textStyle = env.textStyle;
 const name = Script.name();
 // 文件
 const fm = FileManager.local();
-// 组件
+// 排版
 const widget = new ListWidget();
 const contentStack = widget.addStack();
+contentStack.layoutVertically();
+contentStack.addSpacer(3);
 //------------------------------------------------
 
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓内容区↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 let locale = undefined;
 let competitionId = undefined;
 let seasonId = undefined;
+let leagueName = undefined;
+const teamNmu = 7;
 
 if (Device.locale() == "zh_CN") {
   locale = "zh";
@@ -63,82 +70,90 @@ if (inputStr.length == 0) {
   // 英超
   competitionId = "9";
   seasonId = "39301";
+  leagueName = "英格兰足球超级联赛";
 } else if (inputStr == "slp") {
   // 西甲
   competitionId = "10";
   seasonId = "39319";
+  leagueName = "西班牙足球甲级联赛";
 } else if (inputStr == "liga") {
   // 德甲
   competitionId = "1";
   seasonId = "39285";
+  leagueName = "德国足球甲级联赛";
 } else if (inputStr == "isa") {
   // 意甲
   competitionId = "13";
   seasonId = "39325";
+  leagueName = "意大利足球甲级联赛";
 } else if (inputStr == "flc") {
   // 法甲
   competitionId = "23";
   seasonId = "39245";
+  leagueName = "法国足球甲级联赛";
 } else {
   // 英超
   competitionId = "9";
   seasonId = "39301";
+  leagueName = "英格兰足球甲级联赛";
 }
 
 // 获取联赛数据
 const leagueJSON = await getLeague();
 const leagueIcon = await getLeagueIcon();
 
-let titleStack = widget.addStack();
-titleStack.layoutHorizontally();
-// 整体内容居中对齐
-titleStack.centerAlignContent();
+let titleStack = contentStack.addStack();
+titleStack.addSpacer(98);
 // 添加联赛徽标
 let leagueImg = leagueIcon;
 imgStyle.stack = titleStack;
-imgStyle.width = 20;
-imgStyle.height = 20;
+imgStyle.width = 18;
+imgStyle.height = 18;
 imgStyle.img = leagueImg;
 env.addStyleImg();
 titleStack.addSpacer(4);
 // 联赛名称
 textStyle.stack = titleStack;
-textStyle.text = "英格兰足球超级联赛";
+textStyle.text = leagueName;
 textStyle.lineLimit = 1;
 textStyle.font = Font.boldSystemFont(15);
 textStyle.textColor = headTitleFontColor;
 env.addStyleText();
-widget.addSpacer(2);
+contentStack.addSpacer(2);
 
-let tableStack = widget.addStack();
-tableStack.layoutHorizontally();
-// 整体内容居中对齐
-tableStack.centerAlignContent();
+// 积分榜标题
+let tableStack = env.alignLeftStack(contentStack, 50);
 for (var i = 0; i < tableTitles.length; i++) {
-  let tableTitle = tableStack.addText(Object.values(tableTitles[i])[0]);
-  // 积分表标题字体样式/大小
-  tableTitle.font = Font.boldRoundedSystemFont(13);
-  // 积分表标题的颜色
-  tableTitle.textColor = listTitleFontColor;
-  tableTitle.lineLimit = 1;
-  tableStack.addSpacer(30);
+  textStyle.stack = tableStack;
+  textStyle.text = Object.values(tableTitles[i])[0];
+  textStyle.font = Font.boldSystemFont(13);
+  textStyle.textColor = headTitleFontColor;
+  env.addStyleText();
+  if (i == 0) {
+    tableStack.addSpacer(43);
+  } else if (i == 1) {
+    tableStack.addSpacer(35);
+  } else if (i == 2) {
+    tableStack.addSpacer(23);
+  } else if (i == 3) {
+    tableStack.addSpacer(22);
+  }
 }
 
-// 列表
+// 积分榜详情
 let teamImg = undefined;
 var j = 0;
 for (var item of leagueJSON.groups[0].ranking) {
-  if (j == 5) {
+  let teamStack = env.alignLeftStack(contentStack);
+  teamStack.addSpacer(10);
+  if (j == teamNmu) {
     break;
   }
   const teamImgCachePath = fm.joinPath(
     fm.documentsDirectory(),
     "teamImage" + j + "-cache"
   );
-  let contentStack = widget.addStack();
-  contentStack.layoutHorizontally();
-  // 整体内容居中对齐
-  contentStack.centerAlignContent();
+
   log(`${item.team.idInternal}`);
   const teamImgUrl = `https://images.onefootball.com/icons/teams/56/${item.team.idInternal}.png`;
   try {
@@ -149,19 +164,24 @@ for (var item of leagueJSON.groups[0].ranking) {
     teamImg = fm.readImage(teamImgCachePath);
     log(`读取队徽缓存`);
   }
-  const imgWidget = contentStack.addImage(teamImg);
-  imgWidget.imageSize = new Size(16, 16);
+
   const stats = item.team.teamstats;
-  createTextStack(contentStack, `${item.team.name}`, 100);
-  createTextStack(contentStack, `${stats.played}`, 30);
-  createTextStack(
-    contentStack,
-    `${stats.won}/${stats.drawn}/${stats.lost}`,
-    60
-  );
-  createTextStack(contentStack, `${stats.goalsShot}/${stats.goalsGot}`, 60);
-  createTextStack(contentStack, `${stats.points}`, 30);
-  widget.addSpacer();
+  let teamName = `${item.team.name}`;
+  imgStyle.stack = teamStack;
+  imgStyle.width = 13;
+  imgStyle.height = 13;
+  imgStyle.img = teamImg;
+  env.addStyleImg();
+  if (teamName == "阿士東維拉足球會") {
+    teamName = "阿斯顿维拉";
+    createTextStack(teamStack, teamName, 80);
+  } else {
+    createTextStack(teamStack, `${item.team.name}`, 80);
+  }
+  createTextStack(teamStack, `${stats.played}`, 30);
+  createTextStack(teamStack, `${stats.won}/${stats.drawn}/${stats.lost}`, 60);
+  createTextStack(teamStack, `${stats.goalsShot}/${stats.goalsGot}`, 60);
+  createTextStack(teamStack, `${stats.points}`, 30);
   j++;
 }
 
@@ -208,8 +228,9 @@ async function getLeagueIcon() {
 }
 
 function createTextStack(stack, text, width) {
-  const tmpStack = stack.addStack();
-  tmpStack.size = new Size(width, 20);
+  //const tmpStack = stack.addStack();
+  const tmpStack = env.alignLeftStack(stack);
+  tmpStack.size = new Size(width, 18);
   const widgetText = tmpStack.addText(text);
   widgetText.font = Font.systemFont(13);
   //       homeText.textColor = new Color("#e587ce")
@@ -217,7 +238,6 @@ function createTextStack(stack, text, width) {
   widgetText.textOpacity = 0.6;
   return widgetText;
 }
-
 //------------------------------------------------
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑内容区↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
