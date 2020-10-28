@@ -11,6 +11,8 @@ env.configs.leftPadding = 0; // 内容区边距
 env.configs.bottomPadding = 0; // 内容区边距
 env.configs.rightPadding = 0; // 内容区边距
 env.configs.refreshInterval = 60 * 3; // 刷新间隔，单位分钟，非精准，会有3-5分钟差距
+// 文件
+const fm = FileManager.local();
 //
 const imgStyle = env.imgStyle;
 const textStyle = env.textStyle;
