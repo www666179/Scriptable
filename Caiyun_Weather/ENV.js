@@ -51,11 +51,17 @@ exports.imgStyle = textStyle;
 //------------------------------------------------
 
 //------------------------------------------------
-exports.run = async function (scriptName, widget) {
+exports.run = async function (scriptName, widget, autoDark = false) {
   let appearance = (await exports.isUsingDarkAppearance()) ? "dark" : "light";
   let appearanceStr = appearance == "dark" ? "暗黑模式" : "白天模式";
 
-  let fileImgName = `${scriptName}-${appearance}.jpg`;
+  let fileImgName = `${scriptName}.jpg`;
+  if (autoDark) {
+    fileImgName = `${scriptName}-${appearance}.jpg`;
+  } else {
+    appearanceStr = "";
+  }
+
   path = fm.joinPath(fm.documentsDirectory(), fileImgName);
 
   if (
